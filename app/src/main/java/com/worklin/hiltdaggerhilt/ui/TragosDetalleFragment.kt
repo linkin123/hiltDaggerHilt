@@ -5,17 +5,35 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.worklin.hiltdaggerhilt.AppDatabase
 import com.worklin.hiltdaggerhilt.R
+import com.worklin.hiltdaggerhilt.data.DataSource
 import com.worklin.hiltdaggerhilt.data.model.Drink
+import com.worklin.hiltdaggerhilt.data.model.DrinkEntity
 import com.worklin.hiltdaggerhilt.databinding.FragmentMainBinding
 import com.worklin.hiltdaggerhilt.databinding.FragmentTragosDetalleBinding
+import com.worklin.hiltdaggerhilt.domain.RepoImpl
+import com.worklin.hiltdaggerhilt.ui.viewmodel.MainViewModel
+import com.worklin.hiltdaggerhilt.ui.viewmodel.VMFactory
 
 class TragosDetalleFragment : Fragment() {
 
     private lateinit var binding : FragmentTragosDetalleBinding
     private lateinit var drink : Drink
+    private val viewModel by viewModels<MainViewModel>{
+        VMFactory(
+            RepoImpl(
+                DataSource(
+                    AppDatabase.getDatabase(requireActivity().applicationContext
+                    )
+                )
+            )
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +53,20 @@ class TragosDetalleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        onclicks()
         with(binding){
             Glide.with(requireContext()).load(drink.imagen).centerCrop().into(ivTrago)
             tvTrago.text = drink.nombre
             tvDescription.text = drink.descripcion
+        }
+    }
+
+    private fun onclicks() {
+        binding.fabAddFavorites.setOnClickListener {
+            viewModel.guardarTrago(DrinkEntity(drink.tragoId, drink.imagen, drink.nombre, drink.descripcion))
+            Toast.makeText(requireContext(), "se guardo el trago en favoritos", Toast.LENGTH_SHORT)
+                .show()
+
         }
     }
 

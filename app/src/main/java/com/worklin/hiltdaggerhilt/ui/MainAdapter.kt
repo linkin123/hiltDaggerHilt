@@ -40,13 +40,13 @@ class MainAdapter(
             binding.tvName.text = item.nombre
             binding.tvDescription.text = item.descripcion
             itemView.setOnClickListener {
-                itemClick.onTragoClick(item)
+                itemClick.onTragoClick(item, position)
             }
         }
     }
 
     interface OnTragoClickListener {
-        fun onTragoClick(drink: Drink)
+        fun onTragoClick(drink: Drink, position: Int)
     }
 
 }

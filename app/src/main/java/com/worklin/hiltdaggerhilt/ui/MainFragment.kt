@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.worklin.hiltdaggerhilt.AppDatabase
 import com.worklin.hiltdaggerhilt.R
 import com.worklin.hiltdaggerhilt.data.DataSource
 import com.worklin.hiltdaggerhilt.data.model.Drink
@@ -24,8 +25,18 @@ import com.worklin.hiltdaggerhilt.vo.Resource
 
 class MainFragment : Fragment(), MainAdapter.OnTragoClickListener {
 
-    private val viewModel by viewModels<MainViewModel>{ VMFactory(RepoImpl(DataSource())) }
-    private lateinit var binding : FragmentMainBinding
+    private val viewModel by viewModels<MainViewModel> {
+        VMFactory(
+            RepoImpl(
+                DataSource(
+                    AppDatabase.getDatabase(
+                        requireActivity().applicationContext
+                    )
+                )
+            )
+        )
+    }
+    private lateinit var binding: FragmentMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +46,7 @@ class MainFragment : Fragment(), MainAdapter.OnTragoClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding =  DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
         return binding.root
     }
 
@@ -44,11 +55,18 @@ class MainFragment : Fragment(), MainAdapter.OnTragoClickListener {
         setUpRecyclerView()
         setupSearchView()
         setUpObservers()
+        onclicks()
+    }
+
+    private fun onclicks() {
+        binding.btnGoFavorites.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_favoriteFragment)
+        }
     }
 
     private fun setUpObservers() {
         viewModel.fetchTragosList.observe(viewLifecycleOwner, Observer { result ->
-            when(result){
+            when (result) {
                 is Resource.Loading -> {
                     binding.progressBar.visibility = View.VISIBLE
                 }
@@ -58,22 +76,31 @@ class MainFragment : Fragment(), MainAdapter.OnTragoClickListener {
                 }
                 is Resource.Failure -> {
                     binding.progressBar.visibility = View.GONE
-                    Toast.makeText(requireContext(), "Ocurrio un error al traer los datos ${result.exception}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Ocurrio un error al traer los datos ${result.exception}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
     }
 
-    private  fun setUpRecyclerView(){
-        with(binding){
+    private fun setUpRecyclerView() {
+        with(binding) {
             rvTragos.layoutManager = LinearLayoutManager(requireContext())
-            rvTragos.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+            rvTragos.addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
 
     }
 
-    private fun setupSearchView(){
-        binding.svTragos.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+    private fun setupSearchView() {
+        binding.svTragos.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.setTrago(query!!)
                 return false
@@ -86,7 +113,7 @@ class MainFragment : Fragment(), MainAdapter.OnTragoClickListener {
         })
     }
 
-    override fun onTragoClick(drink: Drink) {
+    override fun onTragoClick(drink: Drink, position: Int) {
         val bundle = Bundle()
         bundle.putParcelable("drink", drink)
         findNavController().navigate(R.id.action_mainFragment_to_tragosDetalleFragment, bundle)
