@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.worklin.hiltdaggerhilt.AppDatabase
 import com.worklin.hiltdaggerhilt.R
-import com.worklin.hiltdaggerhilt.data.DataSource
+import com.worklin.hiltdaggerhilt.data.DataSourceImpl
 import com.worklin.hiltdaggerhilt.data.model.Drink
 import com.worklin.hiltdaggerhilt.databinding.FragmentMainBinding
 import com.worklin.hiltdaggerhilt.domain.RepoImpl
@@ -28,7 +28,7 @@ class MainFragment : Fragment(), MainAdapter.OnTragoClickListener {
     private val viewModel by viewModels<MainViewModel> {
         VMFactory(
             RepoImpl(
-                DataSource(
+                DataSourceImpl(
                     AppDatabase.getDatabase(
                         requireActivity().applicationContext
                     )

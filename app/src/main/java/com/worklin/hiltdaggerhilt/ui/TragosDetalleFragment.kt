@@ -11,10 +11,9 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.worklin.hiltdaggerhilt.AppDatabase
 import com.worklin.hiltdaggerhilt.R
-import com.worklin.hiltdaggerhilt.data.DataSource
+import com.worklin.hiltdaggerhilt.data.DataSourceImpl
 import com.worklin.hiltdaggerhilt.data.model.Drink
 import com.worklin.hiltdaggerhilt.data.model.DrinkEntity
-import com.worklin.hiltdaggerhilt.databinding.FragmentMainBinding
 import com.worklin.hiltdaggerhilt.databinding.FragmentTragosDetalleBinding
 import com.worklin.hiltdaggerhilt.domain.RepoImpl
 import com.worklin.hiltdaggerhilt.ui.viewmodel.MainViewModel
@@ -27,7 +26,7 @@ class TragosDetalleFragment : Fragment() {
     private val viewModel by viewModels<MainViewModel>{
         VMFactory(
             RepoImpl(
-                DataSource(
+                DataSourceImpl(
                     AppDatabase.getDatabase(requireActivity().applicationContext
                     )
                 )

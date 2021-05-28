@@ -3,11 +3,11 @@ package com.worklin.hiltdaggerhilt.data
 import com.worklin.hiltdaggerhilt.AppDatabase
 import com.worklin.hiltdaggerhilt.data.model.Drink
 import com.worklin.hiltdaggerhilt.data.model.DrinkEntity
-import com.worklin.hiltdaggerhilt.domain.DataSourceRepo
+import com.worklin.hiltdaggerhilt.domain.DataSource
 import com.worklin.hiltdaggerhilt.vo.Resource
 import com.worklin.hiltdaggerhilt.vo.RetrofitClient
 
-class DataSource(private val appDatabase: AppDatabase) : DataSourceRepo {
+class DataSourceImpl(private val appDatabase: AppDatabase) : DataSource {
 
     override suspend fun getTragoByName(tragoName: String): Resource<List<Drink>> {
         return Resource.Success(RetrofitClient.webService.getTragoByName(tragoName).drinkList)
