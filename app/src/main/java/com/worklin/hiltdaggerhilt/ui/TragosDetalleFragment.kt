@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.worklin.hiltdaggerhilt.AppDatabase
@@ -25,7 +26,7 @@ class TragosDetalleFragment : Fragment() {
     private lateinit var binding : FragmentTragosDetalleBinding
     private lateinit var drink : Drink
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by activityViewModels<MainViewModel>()
 
 
 /*

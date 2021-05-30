@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -26,7 +27,7 @@ class FavoriteFragment : Fragment(), MainAdapter.OnTragoClickListener {
     private lateinit var binding : FragmentFavoriteBinding
 
     private lateinit var adapter: MainAdapter
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by activityViewModels<MainViewModel>()
 
 
 /*    private val viewModel by viewModels<MainViewModel>{
