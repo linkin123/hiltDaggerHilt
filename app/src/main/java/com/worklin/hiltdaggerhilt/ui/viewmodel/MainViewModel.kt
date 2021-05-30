@@ -1,14 +1,18 @@
 package com.worklin.hiltdaggerhilt.ui.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.worklin.hiltdaggerhilt.data.model.Drink
 import com.worklin.hiltdaggerhilt.data.model.DrinkEntity
 import com.worklin.hiltdaggerhilt.domain.Repo
 import com.worklin.hiltdaggerhilt.vo.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(private val repo : Repo) : ViewModel() {
+//@HiltViewModel
+class MainViewModel @ViewModelInject constructor(private val repo : Repo) : ViewModel() {
 
     private val tragosData = MutableLiveData<String>()
 

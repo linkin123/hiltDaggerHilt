@@ -4,8 +4,9 @@ import com.worklin.hiltdaggerhilt.data.DataSourceImpl
 import com.worklin.hiltdaggerhilt.data.model.Drink
 import com.worklin.hiltdaggerhilt.data.model.DrinkEntity
 import com.worklin.hiltdaggerhilt.vo.Resource
+import javax.inject.Inject
 
-class RepoImpl(private val dataSource : DataSourceImpl): Repo {
+class RepoImpl @Inject constructor(private val dataSource : DataSourceImpl): Repo {
     override suspend fun  getTragosList(tragoName : String ): Resource<List<Drink>> {
         return dataSource.getTragoByName(tragoName)
     }

@@ -4,11 +4,32 @@ import com.worklin.hiltdaggerhilt.AppDatabase
 import com.worklin.hiltdaggerhilt.data.model.Drink
 import com.worklin.hiltdaggerhilt.data.model.DrinkEntity
 import com.worklin.hiltdaggerhilt.domain.DataSource
+import com.worklin.hiltdaggerhilt.domain.TragosDao
 import com.worklin.hiltdaggerhilt.vo.Resource
 import com.worklin.hiltdaggerhilt.vo.RetrofitClient
+import javax.inject.Inject
 
-class DataSourceImpl(private val appDatabase: AppDatabase) : DataSource {
+//class DataSourceImpl @Inject constructor(private val appDatabase: AppDatabase) : DataSource {
+class DataSourceImpl @Inject constructor(private val tragosDao: TragosDao) : DataSource {
 
+    override suspend fun getTragoByName(tragoName: String): Resource<List<Drink>> {
+        return Resource.Success(RetrofitClient.webService.getTragoByName(tragoName).drinkList)
+    }
+
+    override suspend fun insertTragoIntoRoom(trago: DrinkEntity) {
+        tragosDao.insertFavorite(trago)
+    }
+
+    override suspend fun getTragosFavoritos(): Resource<List<DrinkEntity>> {
+        return Resource.Success(tragosDao.getFavoriteDrinks())
+    }
+
+    override suspend fun deleteDrink(drink: Drink) {
+        tragosDao.deleteDrink(drink.asfavoriteEntity())
+    }
+
+
+/*
     override suspend fun getTragoByName(tragoName: String): Resource<List<Drink>> {
         return Resource.Success(RetrofitClient.webService.getTragoByName(tragoName).drinkList)
     }
@@ -24,6 +45,7 @@ class DataSourceImpl(private val appDatabase: AppDatabase) : DataSource {
     override suspend fun deleteDrink(drink: Drink) {
         appDatabase.tragoDao().deleteDrink(drink.asfavoriteEntity())
     }
+*/
 
 /*
     val generateTragosList = Resource.Success(

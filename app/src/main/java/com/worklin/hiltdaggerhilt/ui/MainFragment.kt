@@ -20,11 +20,15 @@ import com.worklin.hiltdaggerhilt.data.model.Drink
 import com.worklin.hiltdaggerhilt.databinding.FragmentMainBinding
 import com.worklin.hiltdaggerhilt.domain.RepoImpl
 import com.worklin.hiltdaggerhilt.ui.viewmodel.MainViewModel
-import com.worklin.hiltdaggerhilt.ui.viewmodel.VMFactory
 import com.worklin.hiltdaggerhilt.vo.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainFragment : Fragment(), MainAdapter.OnTragoClickListener {
 
+    private val viewModel by viewModels<MainViewModel>()
+
+/*
     private val viewModel by viewModels<MainViewModel> {
         VMFactory(
             RepoImpl(
@@ -36,6 +40,7 @@ class MainFragment : Fragment(), MainAdapter.OnTragoClickListener {
             )
         )
     }
+*/
     private lateinit var binding: FragmentMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

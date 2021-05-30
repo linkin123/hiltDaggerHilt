@@ -12,6 +12,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun tragoDao(): TragosDao
 
+/*
     companion object{
         private var INSTANCE: AppDatabase? = null
 
@@ -26,5 +27,6 @@ abstract class AppDatabase : RoomDatabase() {
             INSTANCE = null
         }
     }
+*/
 
 }

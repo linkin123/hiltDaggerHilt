@@ -17,12 +17,19 @@ import com.worklin.hiltdaggerhilt.data.model.Drink
 import com.worklin.hiltdaggerhilt.databinding.FragmentFavoriteBinding
 import com.worklin.hiltdaggerhilt.domain.RepoImpl
 import com.worklin.hiltdaggerhilt.ui.viewmodel.MainViewModel
-import com.worklin.hiltdaggerhilt.ui.viewmodel.VMFactory
 import com.worklin.hiltdaggerhilt.vo.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoriteFragment : Fragment(), MainAdapter.OnTragoClickListener {
 
-    private val viewModel by viewModels<MainViewModel>{
+    private lateinit var binding : FragmentFavoriteBinding
+
+    private lateinit var adapter: MainAdapter
+    private val viewModel by viewModels<MainViewModel>()
+
+
+/*    private val viewModel by viewModels<MainViewModel>{
         VMFactory(
             RepoImpl(
                 DataSourceImpl(
@@ -31,9 +38,9 @@ class FavoriteFragment : Fragment(), MainAdapter.OnTragoClickListener {
                 )
             )
         )
-    }
+    }*/
 
-    private lateinit var binding : FragmentFavoriteBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +67,9 @@ class FavoriteFragment : Fragment(), MainAdapter.OnTragoClickListener {
                 is Resource.Success->{
                     val list = result.data.map{
                         Drink(it.tragoId, it.imagen, it.nombre, it.descripcion)
-                    }
-                    binding.rvFavoriteTragos.adapter = MainAdapter(requireContext(), list, this)
+                    }.toMutableList()
+                    adapter = MainAdapter(requireContext(), list, this, )
+                    binding.rvFavoriteTragos.adapter = adapter
                 }
                 is Resource.Failure->{}
 
@@ -80,6 +88,7 @@ class FavoriteFragment : Fragment(), MainAdapter.OnTragoClickListener {
 
     override fun onTragoClick(drink: Drink, position: Int) {
         viewModel.deleteDrink(drink)
+//        adapter.deleteDrink(position)
         binding.rvFavoriteTragos.adapter?.notifyItemRemoved(position)
     }
 }

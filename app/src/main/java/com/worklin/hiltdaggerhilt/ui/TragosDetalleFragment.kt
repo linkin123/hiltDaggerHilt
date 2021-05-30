@@ -17,12 +17,18 @@ import com.worklin.hiltdaggerhilt.data.model.DrinkEntity
 import com.worklin.hiltdaggerhilt.databinding.FragmentTragosDetalleBinding
 import com.worklin.hiltdaggerhilt.domain.RepoImpl
 import com.worklin.hiltdaggerhilt.ui.viewmodel.MainViewModel
-import com.worklin.hiltdaggerhilt.ui.viewmodel.VMFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TragosDetalleFragment : Fragment() {
 
     private lateinit var binding : FragmentTragosDetalleBinding
     private lateinit var drink : Drink
+
+    private val viewModel by viewModels<MainViewModel>()
+
+
+/*
     private val viewModel by viewModels<MainViewModel>{
         VMFactory(
             RepoImpl(
@@ -34,6 +40,7 @@ class TragosDetalleFragment : Fragment() {
         )
     }
 
+*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireArguments().let {
